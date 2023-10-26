@@ -1,5 +1,9 @@
 package com.codewithsatish.blog.serviceimpl;
 
+import java.util.List;
+import java.util.Optional;
+
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +18,9 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	private UserRepository userRepository;
 
+	@Autowired
+	private ModelMapper modelMapper;
+
 	@Override
 	public UserDto createUser(UserDto user) {
 
@@ -23,49 +30,59 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	public UserDto updateUser(UserDto userDto, long id) {
+
+		this.userRepository.findById(id);
+
+		return null;
+//				this.userToDto(dtoToUser);
+	}
+
+	@Override
 	public void deleteUser(long id) {
 		userRepository.deleteById(id);
 	}
 
-	public User dtoToUser(UserDto user) {
+	@Override
+	public List<User> getAll() {
+		return userRepository.findAll();
+	}
 
-		User user1 = new User();
-		user1.setName(user.getName());
-		user1.setEmail(user.getEmail());
-		user1.setAbout(user.getAbout());
-		user1.setPassword(user.getPassword());
+	public UserDto getById(long id) {
+
+		User user = userRepository.findById(id);
+
+		return this.userToDto(user);
+	}
+
+//	@Override
+//	public UserDto getUserById(Integer userId) {
+//	User user = this.userRepo.findById(userId)
+//			
+//	.orElse Throw (() -> new ResourceNotFoundException ("User, "id",id);
+//	return this. userToDto (user);
+//	}
+
+	@Override
+	public UserDto getUser(long id) {
+
+		User dbUser = userRepository.findById(id);
+
+		return null;
+	}
+
+	public User dtoToUser(UserDto userDto) {
+
+		User user1 = this.modelMapper.map(userDto, User.class);
 
 		return user1;
 	}
 
 	public UserDto userToDto(User user) {
 
-		UserDto userDto = new UserDto();
-		userDto.setName(user.getName());
-		userDto.setEmail(user.getEmail());
-		userDto.setAbout(user.getAbout());
-		userDto.setPassword(user.getPassword());
+		UserDto userDto = this.modelMapper.map(user, UserDto.class);
 
 		return userDto;
 	}
-
-	@Override
-	public UserDto updateUser(UserDto user, long id) {
-		UserDto dbUser = userRepository.findById(id);
-		User dtoToUser = this.dtoToUser(user);
-		dbUser.setName(dtoToUser.getName());
-		dbUser.setAbout(dtoToUser.getAbout());
-		dbUser.setEmail(dtoToUser.getEmail());
-		dbUser.setPassword(dtoToUser.getPassword());
-		userRepository.save(dtoToUser);
-		return this.userToDto(dtoToUser);
-	}
-
-//	@Override
-//	public List<UserDto> getAll() {
-//		List<User> findAllUsers = userRepository.findAll();
-//		User allUser = this.dtoToUser((UserDto) findAllUsers);
-//		return this.dtoToUser(allUser);
-//	}
 
 }

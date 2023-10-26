@@ -1,12 +1,13 @@
 package com.codewithsatish.blog.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import com.codewithsatish.blog.enitity.User;
-import com.codewithsatish.blog.payload.UserDto;
 
+@Repository
 public interface UserRepository extends JpaRepository<User, Long>{
 	
-	public UserDto findById(long id);
-
+	public User findById(long id);
+	
 }
