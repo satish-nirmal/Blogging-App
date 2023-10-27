@@ -17,4 +17,6 @@ public interface UserService {
 	
 	public UserDto getUser(long id);
 	
+	public UserDto getById(long id);
+	
 }

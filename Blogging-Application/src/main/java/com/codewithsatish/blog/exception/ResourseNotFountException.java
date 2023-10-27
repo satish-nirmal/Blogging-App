@@ -9,9 +9,9 @@ public class ResourseNotFountException extends RuntimeException {
 
 	private String resouseName;
 	private String fieldName;
-	private String feildValue;
+	private long feildValue;
 
-	public ResourseNotFountException(String resouseName, String fieldName, String feildValue) {
+	public ResourseNotFountException(String resouseName, String fieldName, long feildValue) {
 		super(String.format("%s not found with %s: %s", resouseName, fieldName, feildValue));
 		this.resouseName = resouseName;
 		this.fieldName = fieldName;

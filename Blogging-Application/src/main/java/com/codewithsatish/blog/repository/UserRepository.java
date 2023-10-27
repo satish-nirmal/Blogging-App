@@ -6,8 +6,10 @@ import org.springframework.stereotype.Repository;
 import com.codewithsatish.blog.enitity.User;
 
 @Repository
-public interface UserRepository extends JpaRepository<User, Long>{
-	
+public interface UserRepository extends JpaRepository<User, Long> {
+
 	public User findById(long id);
-	
+
+	public User findByName(String name);
+
 }

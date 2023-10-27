@@ -32,34 +32,56 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public UserDto updateUser(UserDto userDto, long id) {
 
-		this.userRepository.findById(id);
+//		this.userRepository.findById(id);
 
-		return null;
+		User userOptional = this.userRepository.findById(id);
+		userOptional.setName(userDto.getName());
+		userOptional.setAbout(userDto.getAbout());
+		userOptional.setEmail(userDto.getEmail());
+		userOptional.setPassword(userDto.getPassword());
+
+		User saveUser = userRepository.save(userOptional);
+		return userToDto(saveUser);
 //				this.userToDto(dtoToUser);
 	}
 
 	@Override
 	public void deleteUser(long id) {
-		userRepository.deleteById(id);
+		User dbUser = userRepository.findById(id);
+		userRepository.delete(dbUser);
 	}
 
 	@Override
 	public List<User> getAll() {
+
 		return userRepository.findAll();
 	}
 
 	public UserDto getById(long id) {
+		List<User> allUsers = userRepository.findAll();
 
-		User user = userRepository.findById(id);
+		Optional<User> userOptional = allUsers.stream().filter(user -> user.getId() == id).findFirst();
 
-		return this.userToDto(user);
+		User findById = userRepository.findById(id);
+
+		System.err.println("findById====== " + findById);
+
+//	    userOptional.orElseThrow(()-> ResourseNotFountException("User", "id", id));
+//	    userOptional.orElseThrow (() -> new ResourceNotFoundException("User",id,"id"));
+		if (userOptional.isPresent()) {
+			User user = userOptional.get();
+			UserDto userDto = userToDto(user);
+			return userDto;
+		} else {
+			return null;
+		}
 	}
 
 //	@Override
 //	public UserDto getUserById(Integer userId) {
 //	User user = this.userRepo.findById(userId)
 //			
-//	.orElse Throw (() -> new ResourceNotFoundException ("User, "id",id);
+//	
 //	return this. userToDto (user);
 //	}
 

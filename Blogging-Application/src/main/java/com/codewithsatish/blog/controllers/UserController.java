@@ -21,7 +21,6 @@ import com.codewithsatish.blog.payload.ApiResponse;
 import com.codewithsatish.blog.payload.UserDto;
 import com.codewithsatish.blog.service.UserService;
 
-
 @RestController
 @RequestMapping("/v1")
 public class UserController {
@@ -30,7 +29,7 @@ public class UserController {
 	private UserService userService;
 
 	@PostMapping("/create/user")
-	public ResponseEntity<UserDto> create(@Valid @RequestBody UserDto user) {
+	public ResponseEntity<UserDto> createUser(@Valid @RequestBody UserDto user) {
 
 		UserDto createUser = userService.createUser(user);
 
@@ -38,7 +37,7 @@ public class UserController {
 	}
 
 	@PutMapping("/update/user/{id}")
-	public ResponseEntity<UserDto> userUpdate(@RequestBody UserDto userDto, @PathVariable("id") long id) {
+	public ResponseEntity<UserDto> userUpdate(@Valid @RequestBody UserDto userDto, @PathVariable("id") long id) {
 
 		UserDto updateUser = userService.updateUser(userDto, id);
 
@@ -52,7 +51,7 @@ public class UserController {
 
 		userService.deleteUser(id);
 
-		return new ResponseEntity<>(new ApiResponse("user deleted successfully", true), HttpStatus.OK);
+		return new ResponseEntity<>(new ApiResponse("user deleted successfully ", true), HttpStatus.OK);
 	}
 
 	@GetMapping("/users")
@@ -64,8 +63,8 @@ public class UserController {
 
 	@GetMapping("user/{id}")
 	public UserDto getUser(@PathVariable("id") long id) {
-
-		return userService.getUser(id);
+		UserDto user = userService.getById(id);
+		return user;
 	}
 
 }
